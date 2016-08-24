@@ -28,6 +28,16 @@ cat >/etc/nginx/conf.d/portus.conf <<_END_
           proxy_read_timeout 900s;
         }
       }
+      server {
+        listen 80;
+        location / {
+          proxy_set_header HOST $REGISTRY_HOSTNAME;
+          proxy_pass https://$REGISTRY_HOSTNAME:$REGISTRY_PORT;
+          proxy_ssl_session_reuse off;
+          proxy_ssl_server_name on;
+        }
+      }
+
 _END_
 
 cd /portus
